@@ -18,7 +18,7 @@ const FurnitureSales = require('../models/furniture_sales');
  });
   router.post("/woodsales", async(req, res) => {
    try {
-      const {customerName,productName,quantity,unitPrice,quality,date,paymentType,transport,measurements,color}= req.body;
+      const {productName,quantity,unitPrice,quality,date,paymentType,transport,measurements,color}= req.body;
       //find all  woodstock with wood name
       const stocks =await woodStock.find({productName:productName});
       if(!stocks|| stocks.length === 0)
@@ -32,7 +32,6 @@ const FurnitureSales = require('../models/furniture_sales');
       if(transport)
           total *= 1.05;
       const sale =new woodsales({
-         customerName,
          productName,
          quantity,
          unitPrice,

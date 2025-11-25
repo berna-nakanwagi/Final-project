@@ -73,63 +73,60 @@ router.get("/users", async(req, res) =>{
     }
 });
 
- router.get("/managerDashboard",  ensureAuthenticated, ensureManager, async (req, res) => {
-      res.render("manager_dashboard" )
-    // try {
-    //     //expenses for buying wood stock
-    //    let totalHardWood = await woodStock.aggregate([
-    //     {$match:{woodType:'hardwood'}},
-    //     {$group:{id:null,
-    //         totalQuantity:{$sum:'$quantity'},
-    //         totalCost:{$sum:{$multiply:['$unitPrice','$quantity']}}
-    //     }}
-    //    ]) 
-    //    let totalsoftWood = await woodStock.aggregate([
-    //     {$match:{woodType:'softwood'}},
-    //     {$group:{id:null,
-    //         totalQuantity:{$sum:'$quantity'},
-    //         totalCost:{$sum:{$multiply:['$unitPrice','$quantity']}}
-    //     }}
-    //    ]) 
-    //    let totalTimber = await woodStock.aggregate([
-    //     {$match:{woodType:'timber'}},
-    //     {$group:{id:null,
-    //         totalQuantity:{$sum:'$quantity'},
-    //         totalCost:{$sum:{$multiply:['$unitPrice','$quantity']}}
-    //     }}
-    //    ]) 
-    //    let totalPoles = await woodStock.aggregate([
-    //     {$match:{woodType:'poles'}},
-    //     {$group:{id:null,
-    //         totalQuantity:{$sum:'$quantity'},
-    //         totalCost:{$sum:{$multiply:['$unitPrice','$quantity']}}
-    //     }}
-    //    ]) 
-    //    totalHardWood = totalHardWood[0]??{totalQuantity:0,totalCost:0}
-    //    totalsoftWood = totalsoftWood[0]??{totalQuantity:0,totalCost:0}
-    //    totalTimber = totalTimber[0]??{totalQuantity:0,totalCost:0}
-    //    totalPoles = totalPoles[0]??{totalQuantity:0,totalCost:0}
+router.get("/managerDashboard", ensureAuthenticated, ensureManager, async (req, res) => {
+    try {
+        // Aggregate wood expenses
+        let totalHardWood = await woodStock.aggregate([
+            { $match: { woodType: 'hardwood' } },
+            { $group: { _id: null, totalQuantity: { $sum: '$quantity' }, totalCost: { $sum: { $multiply: ['$unitPrice', '$quantity'] } } } }
+        ]);
 
-    //    // Get all sales
-    // const woodSales = await WoodSales.find().populate("salesAgent"," username")
-    // const FurnitureSales = await FurnitureSales.find().populate("salesAgent"," username")
-    // // Get all stock
-    // const woodStocks = await woodStock.find()
-    // const FurnitureStocks = await FurnitureStock.find()
+        let totalSoftWood = await woodStock.aggregate([
+            { $match: { woodType: 'softwood' } },
+            { $group: { _id: null, totalQuantity: { $sum: '$quantity' }, totalCost: { $sum: { $multiply: ['$unitPrice', '$quantity'] } } } }
+        ]);
 
-    // //Caalculate Revenue
-    // const woodRevenue = 
-    //    res.render("manager_dashboard",{
-    //          totalHardWood,
-    //          totalsoftWood,
-    //          totalTimber,
-    //          totalPoles,
+        let totalTimber = await woodStock.aggregate([
+            { $match: { woodType: 'timber' } },
+            { $group: { _id: null, totalQuantity: { $sum: '$quantity' }, totalCost: { $sum: { $multiply: ['$unitPrice', '$quantity'] } } } }
+        ]);
 
-    //    });
-    // } catch (error) {
-        
-    // }
- });
+        let totalPoles = await woodStock.aggregate([
+            { $match: { woodType: 'poles' } },
+            { $group: { _id: null, totalQuantity: { $sum: '$quantity' }, totalCost: { $sum: { $multiply: ['$unitPrice', '$quantity'] } } } }
+        ]);
+
+        // Set defaults if empty
+        totalHardWood = totalHardWood[0] ?? { totalQuantity: 0, totalCost: 0 };
+        totalSoftWood = totalSoftWood[0] ?? { totalQuantity: 0, totalCost: 0 };
+        totalTimber = totalTimber[0] ?? { totalQuantity: 0, totalCost: 0 };
+        totalPoles = totalPoles[0] ?? { totalQuantity: 0, totalCost: 0 };
+
+        // Optional: get sales and stock
+        const woodSales = await WoodSales.find().populate("salesAgent", "username");
+        const furnitureSales = await FurnitureSales.find().populate("salesAgent", "username");
+
+        const woodStocks = await woodStock.find();
+        const furnitureStocks = await FurnitureStock.find();
+
+        // Render only once
+        res.render("manager_dashboard", {
+            totalHardWood,
+            totalSoftWood,
+            totalTimber,
+            totalPoles,
+            woodSales,
+            furnitureSales,
+            woodStocks,
+            furnitureStocks
+        });
+
+    } catch (error) {
+        console.error("Error loading manager dashboard:", error);
+        res.status(500).send("Error loading manager dashboard");
+    }
+});
+
 
  router.get("/salesAgentdashboard",ensureAuthenticated, ensureSalesAgent,(req, res) => {
     res.render("salesAgent_dashboard" )

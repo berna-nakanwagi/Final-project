@@ -20,47 +20,47 @@ block content
       h1 Welcome, Manager
       p Monitor company performance and stock overview
     section.cards
-      //- .card
-      //-   h3 Total Expenses
-      //-   p #{(totalHardWood.totalCost)+(totalSoftWood.totalCost)+(totalTimber.totalCost)+(Poles.totalCost)}
+      .card
+        h3 Total Expenses
+        p #{(totalHardWood.totalCost)+(totalSoftWood.totalCost)+(totalTimber.totalCost)+(totalPoles.totalCost)}
       .card
         h3 Total Revenue
         p 356 items
-      //- .card
-      //-   h3 HardWood Expenses
-      //-   p #{totalHardWood.totalCost} UGX
-      //- .card
-      //-   h3 SoftWood Expenses
-      //-   p #{totalSoftWood.totalCost} UGX
-      //- .card
-      //-   h3 HardWood Stock
-      //-   p  #{totalHardWood.totalQuantity} Pieces 
-      //- .card
-      //-   h3 SoftWood Stock
-      //-   p  #{totalSoftWood.totalQuantity} Pieces 
-      //- .card
-      //-   h3 profits
-      //-   p 
-    section.reports
-      h2 Recent Sales Report
-      table
-        thead
-          tr
-            th Date
-            th Product
-            th Agent
-            th Amount
-            th Payment Type
-        tbody
-          tr
-            td 29-Oct-2025
-            td Hardwood Timber
-            td John
-            td $350
-            td Cash
-          tr
-            td 28-Oct-2025
-            td Sofa Set
-            td Mary
-            td $890
-            td Cheque
+      .card
+        h3 HardWood Expenses
+        p #{totalHardWood.totalCost} Pieces
+      .card
+        h3 SoftWood Expenses
+        p #{totalSoftWood.totalCost} Pieces
+      .card
+        h3 Timber  Stock
+        p  #{totalTimber.totalQuantity} Pieces 
+      .card
+        h3 Poles Stock
+        p  #{totalPoles.totalQuantity} Pieces 
+      .card
+        h3 profits
+        p 
+    //- section.reports
+    //-   h2 Recent Sales Report
+    //-   table
+    //-     thead
+    //-       tr
+    //-         th Date
+    //-         th Product
+    //-         th Agent
+    //-         th Amount
+    //-         th Payment Type
+    //-     tbody
+    //-       tr
+    //-         td 29-Oct-2025
+    //-         td Hardwood Timber
+    //-         td John
+    //-         td $350
+    //-         td Cash
+    //-       tr
+    //-         td 28-Oct-2025
+    //-         td Sofa Set
+    //-         td Mary
+    //-         td $890
+    //-         td Cheque

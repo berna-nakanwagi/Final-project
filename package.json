@@ -1,7 +1,7 @@
 {
-  "name": "hello_world",
+  "name": "mayondo_wood_furniture",
   "version": "1.0.0",
-  "description": "Hi, my hello world project",
+  "description": "Hi, my MayondoWoodFurniture project",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

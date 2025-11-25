@@ -1,70 +1,118 @@
-/* General body styling */
-body {
-  background-color: #ffffff;
-  color: #000000;
-  font-family: Verdana, sans-serif;
+/* ======== Base Styles ======== */
+* {
   margin: 0;
   padding: 0;
-  justify-content: center;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c")
+    center/cover no-repeat;
+  height: 100vh;
   display: flex;
   align-items: center;
-  min-height: 100vh;
+  justify-content: center;
+  position: relative;
 }
 
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 0;
+}
 
-/* Container */
+/* ======== Form Container ======== */
 .container {
-  background-color: #ffffff;
-  width: 400px;
-  text-align: center;
-
-}
-
-/* Form elements */
-input,
-label,
-select,
-textarea {
-  display: block;
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 50px 40px;
+  border-radius: 18px;
   width: 100%;
+  max-width: 450px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* ======== Heading ======== */
+h1 {
+  text-align: center;
+  color: #3a2e1f;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+  font-size: 1.8rem;
+}
+
+/* ======== Form Elements ======== */
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #3a2e1f;
   margin-top: 15px;
-  color: #000000;
-  font-size: 14px;
 }
 
 input,
 select,
 textarea {
+  width: 100%;
   padding: 12px;
-  background-color: #f8f8f8;
-  border: 1px solid #000000;
-  border-radius: 6px;
-  color: #000000;
-  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.95rem;
+  color: #000;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  outline: none;
-  border-color: #555555;
+  border-color: #9c6b30;
+  box-shadow: 0 0 5px rgba(156, 107, 48, 0.4);
 }
 
-/* Button styling */
+/* ======== Button Styling ======== */
 button {
-  padding: 12px 20px;
-  margin-top: 20px;
-  border: none;
-  border-radius: 6px;
-  background-color: #000000;
-  /* Black button */
+  width: 100%;
+  padding: 12px;
+  background: #9c6b30;
   color: #ffffff;
-  /* White text */
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease;
+  margin-top: 25px;
 }
 
 button:hover {
-  background-color: #555555;
+  background: #704b1d;
+  transform: translateY(-2px);
+}
+
+/* ======== Error Message ======== */
+.error {
+  color: #e53935;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  min-height: 1em;
+}
+
+/* ======== Animations ======== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

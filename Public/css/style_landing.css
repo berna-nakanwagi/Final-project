@@ -4,143 +4,194 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: "Poppins", sans-serif;
-  color: #3a2e1f;
-  background-color: #f8f5f2;
-  overflow-x: hidden;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Navbar */
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f8f5f2;
+  color: #3a2e1f;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
 .navbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  padding: 25px 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 80px;
   background: transparent;
-  position: absolute;
-  width: 100%;
-  top: 0;
+  z-index: 10;
 }
 
 .logo {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: #3a2e1f;
+  letter-spacing: 1px;
 }
 
 .logo span {
-  color: #9c6b30;
+  color: #c48a45;
 }
 
 .nav-links {
-  list-style: none;
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
+  list-style: none;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: #3a2e1f;
   font-weight: 500;
+  font-size: 1rem;
+  color: #3a2e1f;
   transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #9c6b30;
+  color: #c48a45;
 }
 
-/* Hero Section */
 .hero-section {
-  background: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c") center/cover no-repeat;
   height: 100vh;
+  background: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c") center/cover no-repeat;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 20px;
   text-align: center;
-  flex-direction: column;
-  color: white;
-  position: relative;
 }
 
 .hero-section::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.55);
 }
 
 .hero-content {
-  z-index: 1;
+  position: relative;
+  z-index: 2;
   max-width: 700px;
-  padding: 20px;
+  color: #fff;
 }
 
 .hero-content h1 {
-  font-size: 2.8rem;
-  margin-bottom: 20px;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 25px;
 }
 
 .hero-content p {
-  font-size: 1.1rem;
-  margin-bottom: 30px;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 25px;
 }
 
 .btn {
-  text-decoration: none;
-  background: #9c6b30;
-  color: white;
-  padding: 12px 28px;
+  display: inline-block;
+  padding: 12px 32px;
   border-radius: 30px;
   font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s;
+  color: #fff;
+  background: #c48a45;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
-  background: #704b1d;
+  background: #8a5e2e;
   transform: translateY(-3px);
 }
 
-/* About Section */
+.hero-note {
+  font-size: 1rem;
+  color: #f1f1f1;
+  opacity: 0.9;
+}
+
 .about {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 80px 100px;
-  gap: 40px;
+  justify-content: space-between;
+  gap: 50px;
+  padding: 100px 80px;
   flex-wrap: wrap;
 }
 
 .about-text {
   flex: 1;
-  min-width: 300px;
+  min-width: 320px;
 }
 
 .about-text h2 {
-  font-size: 2rem;
+  font-size: 2.4rem;
   margin-bottom: 20px;
   color: #3a2e1f;
 }
 
 .about-text p {
-  font-size: 1rem;
+  max-width: 500px;
+  font-size: 1.05rem;
   color: #555;
 }
 
 .about-image img {
   width: 100%;
-  max-width: 450px;
+  max-width: 480px;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease;
 }
 
-/* Footer */
+.about-image img:hover {
+  transform: scale(1.03);
+}
+
 footer {
+  padding: 35px 20px;
+  background: #3a2e1f;
   text-align: center;
-  padding: 30px;
-  background-color: #3a2e1f;
-  color: white;
-  font-size: 0.9rem;
+  color: #fff;
+  font-size: 0.95rem;
 }
 
+@media (max-width: 900px) {
+  .navbar {
+    padding: 20px 40px;
+  }
 
+  .hero-content h1 {
+    font-size: 2.4rem;
+  }
+
+  .about {
+    padding: 60px 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .about-text h2 {
+    font-size: 1.8rem;
+  }
+}

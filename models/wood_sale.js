@@ -32,7 +32,7 @@ const woodSalesSchema = new mongoose.Schema({
         default: false,
     },
     measurements: {
-        type: Number,
+        type: String,
         required: true,
     },
      color: {
@@ -49,4 +49,4 @@ const woodSalesSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('WoodSales', woodSalesSchema);
+module.exports = mongoose.model('wood_sale', woodSalesSchema);

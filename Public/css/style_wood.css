@@ -1,85 +1,91 @@
 /* ======== Base Styles ======== */
 * {
-  margin: 10px;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-
 body {
   font-family: "Poppins", sans-serif;
-  background-color: whitesmoke;
-  min-height: 100vh;
+  background: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c")
+    center/cover no-repeat;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
+  position: relative;
 }
 
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 0;
+}
 
+/* ======== Form Container ======== */
 .container {
-  background: rgba(255, 255, 255, 0.85); /* semi-transparent white */
-  padding: 2.5rem;
-  border-radius: 1.2rem;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  width: 90%;
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 50px 40px;
+  border-radius: 18px;
+  width: 100%;
   max-width: 450px;
-  backdrop-filter: saturate(180%) blur(5px);
-  animation: fadeIn 0.8s ease-in-out;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 1s ease-in-out;
 }
 
-
-
-
-/* ======== Headings ======== */
+/* ======== Heading ======== */
 h2 {
   text-align: center;
-  color: #1a0d05;
-  margin-bottom: 1.8rem;
-  letter-spacing: 0.5px;
+  color: #3a2e1f;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
 }
 
 /* ======== Form Elements ======== */
 .form-group {
-  margin-bottom: 1.2rem;
+  margin-bottom: 20px;
 }
 
 label {
   display: block;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: #181207;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #3a2e1f;
 }
 
 input,
 select,
 textarea {
   width: 100%;
-  padding: 0.8rem;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 0.6rem;
+  border-radius: 8px;
   outline: none;
+  background: #ffffff;
   font-size: 0.95rem;
-  background: #fffffff2;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #242017;
-  box-shadow: 0 0 8px rgba(212, 158, 82, 0.4);
-  background: #ffffff;
+  border-color: #9c6b30;
+  box-shadow: 0 0 5px rgba(156, 107, 48, 0.4);
 }
 
 /* ======== Button Styling ======== */
 button {
   width: 100%;
-  padding: 0.9rem;
-  background: linear-gradient(135deg, #dba55e, #e9af58);
+  padding: 12px;
+  background: #9c6b30;
   color: #ffffff;
   border: none;
-  border-radius: 0.6rem;
+  border-radius: 8px;
   font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
@@ -87,7 +93,7 @@ button {
 }
 
 button:hover {
-  background: linear-gradient(135deg, #c57b1a, #cca113);
+  background: #704b1d;
   transform: translateY(-2px);
 }
 
@@ -96,7 +102,17 @@ button:hover {
   color: #e53935;
   font-size: 0.85rem;
   height: 1em;
-  margin-top: 0.2rem;
+  margin-top: 4px;
 }
 
-
+/* ======== Animations ======== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
