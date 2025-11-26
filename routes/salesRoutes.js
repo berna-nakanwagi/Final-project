@@ -59,6 +59,74 @@ const FurnitureSales = require('../models/furniture_sales');
      console.error(error.message)
    }
  });
+
+router.get("/registeredWoodsale", async (req, res) => {
+  try {
+    const woodsalesList = await woodsales.find();   
+    res.render("list_woodsale", { woodsales: woodsalesList });
+  } catch (error) {
+    console.error("Error getting woodsale from the DB!", error);
+    res.redirect("/");
+  }
+});
+router.get("/registeredWoodsale", async (req, res) => {
+  try {
+    const woodsalesList = await woodsales.find();   
+    res.render("list_woodsale", { woodsales: woodsalesList });
+  } catch (error) {
+    console.error("Error getting woodsale from the DB!", error);
+    res.redirect("/");
+  }
+});
+router.get("/registeredWoodsale", async (req, res) => {
+  try {
+    const woodsalesList = await woodsales.find();   
+    res.render("list_woodsale", { woodsales: woodsalesList });
+  } catch (error) {
+    console.error("Error getting woodsale from the DB!", error);
+    res.redirect("/");
+  }
+});
+router.get("/registeredWoodsale", async (req, res) => {
+  try {
+    const woodsalesList = await woodsales.find();   
+    res.render("list_woodsale", { woodsales: woodsalesList });
+  } catch (error) {
+    console.error("Error getting woodsale from the DB!", error);
+    res.redirect("/");
+  }
+});
+router.get("/registeredWoodsale", async (req, res) => {
+  try {
+    const woodsalesList = await woodsales.find();   
+    res.render("list_woodsale", { woodsales: woodsalesList });
+  } catch (error) {
+    console.error("Error getting woodsale from the DB!", error);
+    res.redirect("/");
+  }
+});
+
+router.get("/registeredWoodsale", async (req, res) => {
+  try {
+    const woodsalesList = await woodsales.find();   
+    res.render("list_woodsale", { woodsales: woodsalesList });
+  } catch (error) {
+    console.error("Error getting woodsale from the DB!", error);
+    res.redirect("/");
+  }
+});
+
+
+ //get woodsale to update
+ router.get("/wood_sale/:id", async (req,res)=>{
+     try {
+         const woodsale = await woodsale.findOne({_id:req.params.id});
+         res.render("list_woodsale",{item:woodsale})
+     } catch (error) {
+       res.status(400).send("Unable to find woodsale from the database")  
+       console.log(error)
+     }
+ });
  
 
  // furniture sales routes

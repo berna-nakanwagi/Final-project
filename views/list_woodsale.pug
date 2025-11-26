@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    title Registered Woodsales 
+    link(rel="stylesheet",  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous")
+    link(rel="stylesheet" href="/css/table.css")
+  body
+    h2 Registered WoodSales
+    table
+      tr
+        th Product?Name
+        th Quantity
+        th Price 
+        th Date
+        th PaymentType
+        th quality
+        th measurements
+        th Update 
+        th Delete
+      if woodsales.length > 0
+        each item in woodsales
+          tr
+            td #{item.productName}
+            td #{item.quantity}
+            td #{item.unitPrice}
+            td #{item.date}
+            td #{item.paymentType}
+            td #{item.quality}
+            td #{item.measurements}
+            td 
+                a.btn.btn-primary.btn-block(href=`/woodsale/${item._id}`) Update
+            td 
+              form(action="/deletewoodsale" method="post")
+                input(type="hidden" name="id" value=item._id)
+                button.btn.btn-danger.btn-block(type="submit") Delete 
