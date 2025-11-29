@@ -6,77 +6,67 @@ html
     link(rel="stylesheet", href="/css/sales.css")
   body
     .container
-    if woodsales.length
-      h1 Register Your Wood Sale
-      form(action="/woodsales", method="post",)
-        .form-row
-          label(for="productName") Product name
-          select#productName(name="productName", required)
-            option(value="") -- select --
-            option(value="hardwood") Hardwood
-            option(value="softwood") Softwood
-            option(value="timber") Timber
-            option(value="pole") Pole
-            -var groupedWoods ={}
-            each wood in woodsales 
-             - if(!groupedWoods[wood.productName]) groupedWoods[wood.productName] = 0
-             - groupedWoods[wood.productName] += wood.quantity 
-            each qty, name in groupedWoods 
-              if qty > 0
-                option(value=name)= name + "(Available:"+ qty + "units)"
+      if woodsales.length
+        h1 Register Your Wood Sale
+        - var groupedWoods = {}
+        each wood in woodsales
+          - if (!groupedWoods[wood.productName]) groupedWoods[wood.productName] = 0
+          - groupedWoods[wood.productName] += wood.quantity
+        form(action="/woodsales", method="post")
+          .form-row
+            label(for="productName") Product name
+            select#productName(name="productName", required)
+              option(value="") -- select --
+              //- option(value="hardwood") Hardwood
+              //- option(value="softwood") Softwood
+              //- option(value="timber") Timber
+              //- option(value="pole") Pole
+              each qty, name in groupedWoods
+                if qty > 0
+                  option(value=name)= name + " (Available: " + qty + " units)"
 
-        .form-row.inline
-          label(for="quantity") Quantity (pieces)
-          input#quantity(type="number", name="quantity", min="1", value="1", required)
+          .form-row.inline
+            label(for="quantity") Quantity (pieces)
+            input#quantity(type="number", name="quantity", min="1", value="1", required)
 
-          label(for="unitPrice") Unit Price (UGX)
-          input#unitPrice(type="number", name="unitPrice", min="0", step="0.01", value="0", required)
+            label(for="unitPrice") Unit Price (UGX)
+            input#unitPrice(type="number", name="unitPrice", min="0", step="0.01", value="0", required)
 
-        .form-row
-          label(for="quality") Quality
-          select#quality(name="quality", required)
-            option(value="") -- select --
-            option(value="high") High
-            option(value="medium") Medium
-            option(value="low") Low
-            option(value="big") Big
+          .form-row
+            label(for="quality") Quality
+            select#quality(name="quality", required)
+              option(value="") -- select --
+              option(value="high") High
+              option(value="medium") Medium
+              option(value="low") Low
+              option(value="big") Big
 
-        .form-row
-          label(for="date") Date
-          input#date(type="date", name="date", required)
+          .form-row
+            label(for="date") Date
+            input#date(type="date", name="date", required)
 
-        .form-row
-          label(for="measurements") Measurements
-          input#measurements(type="text", name="measurements", required, placeholder="e.g. 2x4x8 ft")
+          .form-row
+            label(for="measurements") Measurements
+            input#measurements(type="text", name="measurements", required, placeholder="e.g. 2x4x8 ft")
 
-        .form-row
-          label(for="color") Color
-          input#color(type="text", name="color", required, placeholder="e.g. Brown")
+          .form-row
+            label(for="color") Color
+            input#color(type="text", name="color", required, placeholder="e.g. Brown")
 
-        .form-row
-          label(for="paymentType") Payment Type
-          select#paymentType(name="paymentType", required)
-            option(value="") -- select --
-            option(value="cash") Cash
-            option(value="cheque") Cheque
-            option(value="bank") Bank Overdraft
-        .form-row
-          label(for="salesAgent") SalesAgent
-          input#salesAgent(type="text", name="salesAgent", required,)
+          .form-row
+            label(for="paymentType") Payment Type
+            select#paymentType(name="paymentType", required)
+              option(value="") -- select --
+              option(value="cash") Cash
+              option(value="cheque") Cheque
+              option(value="bank") Bank Overdraft
 
-        .form-row
-          input#transport(type="checkbox" name="transport")
-          label(for="transport") Provide transport (adds 5% of total)
+          .form-row
+            label(for="salesAgent") SalesAgent
+            input#salesAgent(type="text", name="salesAgent", required)
 
-        button(type='submit') Submit
+          .form-row
+            input#transport(type="checkbox" name="transport")
+            label(for="transport") Provide transport (adds 5% of total)
 
-    //- script.
-    //-   function validateWoodForm() {
-    //-     const productType = document.getElementById('productType').value;
-    //-     const quantity = document.getElementById('quantity').value;
-    //-     if (!productType || quantity <= 0) {
-    //-       alert("Please select a valid product type and enter a positive quantity.");
-    //-       return false;
-    //-     }
-    //-     return true;
-    //-   }
+          button(type='submit') Submit

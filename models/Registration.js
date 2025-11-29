@@ -10,9 +10,6 @@ const registrationSchema = new mongoose.Schema({
         trim: true,
         unique: true,
     },
-    // password: {
-    //     type: String,
-    // },
     role: {
         type: String,
         required: true,

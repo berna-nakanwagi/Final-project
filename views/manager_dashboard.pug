@@ -10,8 +10,6 @@ block content
         li: a(href="/registeredFurniture") Furniture Records
         li: a(href="/users") Users
         li: a(href="/registeredWood") Wood Records
-        li: a(href="/furnituresales") Sales Reports
-        li: a(href="/woodsales") Sales Reports
         li: a(href="/registerWood") Add woodstock
         li: a(href="/registeredWoodsale") Woodsale records 
         li: a(href="/registerFurniture") Add furniture
@@ -23,28 +21,37 @@ block content
     section.cards
       .card
         h3 Total Expenses
-        p #{(totalHardWood.totalCost)+(totalSoftWood.totalCost)+(totalTimber.totalCost)+(totalPoles.totalCost)}
+        p #{ new Intl.NumberFormat().format(woodExpenses)} UGX
       .card
         h3 Total Revenue
-        p 356 items
+        p #{new Intl.NumberFormat().format(totalRevenue)} UGX
       .card
-        h3 HardWood Expenses
-        p #{totalHardWood.totalCost} Pieces
+        h3 Profits
+        p #{new Intl.NumberFormat().format(grossProfit)} UGX
       .card
-        h3 SoftWood Expenses
-        p #{totalSoftWood.totalCost} Pieces
+        h3 Total  Harwood Expenses 
+        p Total Expense on hardwood: #{new Intl.NumberFormat().format(totalHardwood.totalCost)} UGX
+      .card 
+        h3 Total Hardwood in stock
+        p  Qty  of Hardwood in stock:#{new Intl.NumberFormat().format(totalHardwood.totalQuantity)} Pieces
+      .card
+        h3 Total  softwood Expenses 
+        p Total Expense on softwood: #{new Intl.NumberFormat().format(totalsoftwood.totalCost)} UGX
+      .card
+        h3 Total softwood in stock
+        p Qty  of softwood in stock:#{new Intl.NumberFormat().format(totalsoftwood.totalQuantity)} Pieces
+      .card
+        h3 Timber expense
+        p Total Expense on Timber: #{new Intl.NumberFormat().format(totalTimber.totalCost)} tUGX
       .card
         h3 Timber  Stock
-        p  #{totalTimber.totalQuantity} Pieces 
+        p Qty  of Timber in stock:#{new Intl.NumberFormat().format(totalTimber.totalQuantity)} Pieces
+      .card
+        h3 Poles expense
+        p Total Expense on Poles: #{new Intl.NumberFormat().format(totalPoles.totalCost)} UGX
       .card
         h3 Poles Stock
-        p  #{totalPoles.totalQuantity} Pieces 
-      .card
-        h3 profits
-        p 
-      .card
-        h3 profits
-        p 
+        p Qty  of Poles in stock:#{new Intl.NumberFormat().format(totalPoles.totalQuantity)} Pieces
     //- section.reports
     //-   h2 Recent Sales Report
     //-   table

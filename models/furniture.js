@@ -4,22 +4,25 @@ const furnitureSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-
-  type: {
-    type: String,
-    // trim: true,
-    // unique: true,
-
+  quantity: {
+    type: Number,
   },
   price: {
-    type: String,
+    type: Number,
+  },
+  date: {
+    type: Date,
   },
   description: {
     type: String,
     // required:true,
   },
+  type: {
+    type: String, // 
+    required: true
+  },
   furnitureImage: {
-    type: String
+    type: String,
   }
 });
 

@@ -13,6 +13,8 @@ html
           th Name
           th Type
           th Price
+          th Quantity
+          th Date
           th Description
           th Image
           th Update 
@@ -24,6 +26,8 @@ html
               td #{item.name}
               td #{item.type}
               td #{item.price}
+              td #{item.quantity}
+              td #{new Date(item.date).toLocaleDateString("en-US", {year:"numeric", month:"long", day:"numeric"})}
               td #{item.description}
               td 
                 img(src="/" + item.furnitureImage alt="furniture image" width="150px" height="150px")

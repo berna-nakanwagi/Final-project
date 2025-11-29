@@ -15,17 +15,19 @@ section.login-container
     form.login-form(action="/login" method="post")
       .input-group
         label(for='email') Email Address
-        input#email(type='email' name='email' placeholder='example@email.com' required='')
+        input#email(type='email' name='email' placeholder='example@email.com')
       .input-group
         label(for='password') Password
-        input#password(type='password' name='password' placeholder='Enter your password' required='')
+        input#password(type='password' name='password' placeholder='Enter your password')
       button.btn(type='submit') Login
       .options
-        a(href='#') Forgot password?
+        a(href='/register') Forgot password?
         p
           | Don&rsquo;t have an account? 
           a(href='/register') Register
-//
-  <footer>
-  <p>© 2025 Mayondo Wood Furniture | Designed by Nakanwagi Bernardette</p>
-  </footer>
+
+  //- <footer>
+  //- <p>© 2025 Mayondo Wood Furniture | Designed by Nakanwagi Bernardette</p>
+  //- </footer>
+
+  script(src="/js/loginValidation.js")

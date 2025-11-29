@@ -23,7 +23,7 @@ html
             td #{item.productName}
             td #{item.quantity}
             td #{item.unitPrice}
-            td #{item.date}
+            td #{new Date(item.date).toLocaleDateString("en-US", {year:"numeric", month:"long", day:"numeric"})}
             td #{item.paymentType}
             td #{item.quality}
             td #{item.measurements}

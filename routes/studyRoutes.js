@@ -23,7 +23,6 @@ let stocks = {
     holder : ["cone", "cup", "stick"],
     toppings : ["chocolate", "peanuts"],
  }
-
 //function (order, production)
 let order = (fruit_name,call_production) =>{
     setTimeout(function(){

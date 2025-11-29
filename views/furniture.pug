@@ -12,6 +12,13 @@ head
       input#name(type='text' name='name' placeholder='e.g. Wooden Table' required='')
       small.error
     .form-group
+      label(for='quantity') Quantity
+      input#quantity(type='number' name='quantity' placeholder='e.g. 50 pieces' min='1' required='')
+      small.error
+    .form-row
+      label(for="date") Date
+      input#date(type="date" name="date" required)
+    .form-group
       label(for='type') Category
       select#type(name='type' required='')
         option(value='') Select category

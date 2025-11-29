@@ -4,7 +4,6 @@ const FurnitureSalesSchema = new mongoose.Schema({
     customerName: {
         type: String,
     },
-
     productType: {
         type: String,
         // trim: true,
