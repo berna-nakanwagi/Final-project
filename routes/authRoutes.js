@@ -12,28 +12,35 @@ const FurnitureSales = require('../models/furniture_sales');
 
 router.get("/register", (req, res) => {
     res.render("user");
-})
+});
+
 router.post("/register", async (req, res) => {
     try {
-        const newUser = new Registration(req.body)
-        console.log(newUser)
-        let user = await Registration.findOne({
-            email: req.body.email
-        })
-        if (user) {
-            return res.status(400).send('Not registered, user already exists')
-        } else {
-            await Registration.register(newUser, req.body.password, (error) => {
-                if (error) {
-                    throw error;
-                }
-            })
-            req.flash("success_msg", "User successfully registered")
-            res.redirect("/")
+        const { username, email, role, password } = req.body;
+
+        // Validate fields
+        if (!username || !email || !role || !password) {
+            req.flash("error_msg", "All fields are required");
+            return res.redirect("/register");
         }
+
+        // Check if user already exists
+        let user = await Registration.findOne({ email });
+        if (user) {
+            req.flash("error_msg", "User already exists");
+            return res.redirect("/register");
+        }
+
+        // Create new user
+        const newUser = new Registration({ username, email, role });
+        await Registration.register(newUser, password);
+
+        req.flash("success_msg", "User successfully registered");
+        res.redirect("/login"); // redirect to login or home
     } catch (error) {
-        console.error(error.message)
-        res.status(400).send('something went wrong!')
+        console.error(error.message);
+        req.flash("error_msg", "Something went wrong!");
+        res.redirect("/register");
     }
 });
 
@@ -133,19 +140,19 @@ router.get("/managerDashboard", ensureAuthenticated, ensureManager, async (req, 
         const furnitureStocks = await FurnitureStock.find();
 
         //calculte revenue
-        const woodRevenue = woodSales.reduce((sum,sale) => sum+sale.totalPrice,0);
-        const furnitureRevenue = furnitureSales.reduce((sum,sale) => sum + sale.totalPrice,0);
+        const woodRevenue = woodSales.reduce((sum, sale) => sum + sale.totalPrice, 0);
+        const furnitureRevenue = furnitureSales.reduce((sum, sale) => sum + sale.totalPrice, 0);
         const totalRevenue = woodRevenue + furnitureRevenue;
 
         //calculate expenses(from purchase of woodstock)
-        const woodExpenses = woodStocks.reduce((sum,stock) => sum + (stock.unitPrice*stock.quantity),0);
+        const woodExpenses = woodStocks.reduce((sum, stock) => sum + (stock.unitPrice * stock.quantity), 0);
 
         //profits
-        const grossProfit = totalRevenue-woodExpenses;
+        const grossProfit = totalRevenue - woodExpenses;
 
         //low stock alerts
-        const lowWoodStocks = woodStocks.filter(stock => stock.quantity <10);
-        const lowFurnitureStocks = furnitureStocks.filter(stock => stock.quantity <10);
+        const lowWoodStocks = woodStocks.filter(stock => stock.quantity < 10);
+        const lowFurnitureStocks = furnitureStocks.filter(stock => stock.quantity < 10);
 
         // Render only once(should be last)
         res.render("manager_dashboard", {
@@ -172,10 +179,75 @@ router.get("/managerDashboard", ensureAuthenticated, ensureManager, async (req, 
 });
 
 
-router.get("/salesAgentdashboard", ensureAuthenticated, ensureSalesAgent, (req, res) => {
-    res.render("salesAgent_dashboard")
+router.get("/salesAgentdashboard", ensureAuthenticated, ensureSalesAgent, async (req, res) => {
+  try {
+    const agentId = req.user._id;
+    const agentName = req.user.username;
+
+    // Start of today (for today's sales)
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    // Aggregate wood sales for this agent today
+    let todaysWoodSales = await WoodSales.aggregate([
+      { $match: { salesAgent: agentId, date: { $gte: todayStart } } },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$totalPrice" },
+          count: { $sum: "$quantity" },
+          commission: { $sum: "$commission" } // if you store commission
+        }
+      }
+    ]);
+
+    // Aggregate furniture sales for this agent today
+    let todaysFurnitureSales = await FurnitureSales.aggregate([
+      { $match: { salesAgent: agentId, date: { $gte: todayStart } } },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$totalPrice" },
+          count: { $sum: "$quantity" },
+          commission: { $sum: "$commission" }
+        }
+      }
+    ]);
+
+    // Combine totals safely
+    const salesData = {
+      total: (todaysWoodSales[0]?.total || 0) + (todaysFurnitureSales[0]?.total || 0),
+      count: (todaysWoodSales[0]?.count || 0) + (todaysFurnitureSales[0]?.count || 0),
+      commission: (todaysWoodSales[0]?.commission || 0) + (todaysFurnitureSales[0]?.commission || 0)
+    };
+
+    // Optional: fetch products in stock for dropdown in sales form
+    const woodStocks = await woodStock.find();
+    const furnitureStocks = await FurnitureStock.find();
+
+    // Optional: recent sales for this agent
+    const last5WoodSales = await WoodSales.find({ salesAgent: agentId }).sort({ date: -1 }).limit(5);
+    const last5FurnitureSales = await FurnitureSales.find({ salesAgent: agentId }).sort({ date: -1 }).limit(5);
+
+    // Render sales agent dashboard
+    res.render("salesAgent_dashboard", {
+      agentName,
+      todaysSales: salesData.total,
+      productsSold: salesData.count,
+      commission: salesData.commission,
+      woodStocks,
+      furnitureStocks,
+      recentWoodSales: last5WoodSales,
+      recentFurnitureSales: last5FurnitureSales,
+      success_msg: req.flash("success_msg"),
+      error_msg: req.flash("error_msg")
+    });
+
+  } catch (error) {
+    console.error("Error loading sales agent dashboard:", error);
+    req.flash("error_msg", "Unable to load dashboard. Try again later.");
+    res.redirect("/");
+  }
 });
-
-
 
 module.exports = router;//last line

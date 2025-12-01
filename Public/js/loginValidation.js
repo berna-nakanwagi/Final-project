@@ -1,32 +1,35 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector(".login-form");
-  const email = document.getElementById("email");
-  const password = document.getElementById("password");
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector(".login-form");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const emailError = document.getElementById("error-email");
+    const passwordError = document.getElementById("error-password");
 
-  // simple and easy email checker
-  function isValidEmail(value) {
-    // must contain @ and .
-    if (!value.includes("@")) return false;
-    if (!value.includes(".")) return false;
-    return true;
-  }
+    form.addEventListener("submit", function(e) {
+        // Clear previous errors
+        emailError.textContent = "";
+        passwordError.textContent = "";
 
-  form.addEventListener("submit", (e) => {
-    const emailValue = email.value.trim();
-    const passwordValue = password.value.trim();
+        let hasErrors = false;
 
-    // email validation
-    if (!isValidEmail(emailValue)) {
-      alert("Please enter a valid email address.");
-      e.preventDefault();
-      return;
-    }
+        // Validate email
+        if (emailInput.value.trim() === "") {
+            emailError.textContent = "Email is required.";
+            emailError.style.color = "red";
+            hasErrors = true;
+        }
 
-    // password validation (at least 6 characters)
-    if (passwordValue.length < 6) {
-      alert("Password must be at least 6 characters long.");
-      e.preventDefault();
-      return;
-    }
-  });
+        // Validate password
+        if (passwordInput.value.trim() === "") {
+            passwordError.textContent = "Password is required.";
+            passwordError.style.color = "red";
+            hasErrors = true;
+        }
+
+        // Stop form submission if errors exist
+        if (hasErrors) {
+            e.preventDefault();
+        }
+        // else form submits normally
+    });
 });

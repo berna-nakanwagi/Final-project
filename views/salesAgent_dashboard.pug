@@ -1,49 +1,43 @@
-//- extends salesAgent_layout
-doctype html 
-html (lang ="en") 
+doctype html
+html(lang="en")
   head
+    meta(charset="UTF-8")
     title MWF Sales Agent Dashboard
-    link(rel='stylesheet' href='/css/dashboard.css')
-  nav.sidebar
-    h2 MWF Agent
-    ul 
-      li: a(href="/")  landing
-      li: a(href="furnituresales") Furniture Sales
-      li: a(href="woodsales") Wood Sales
-      li: a(href="/registeredWood") wood stock
-      li: a(href="/registeredFurniture") furniture stock
-      li: a(href="/logout") logout     
-  main.main-content
-    header
-      h1 Welcome, Sales Agent
-      p Record sales and check performance
-    section.cards
-      .card
-        h3 Today&apos;s Sales
-        p 600000
-      .card
-        h3 Products Sold
-        p 23 items
-      .card
-        h3 Commission Earned
-        p 8000
-    section.reports
-      h2 Recent Sales
-      table
-        thead
-          tr
-            th Date
-            th Product
-            th Customer
-            th Amount
-        tbody
-          tr
-            td 29-Oct-2025
-            td Office Chair
-            td Mark &amp; Co.
-            td $450
-          tr
-            td 28-Oct-2025
-            td Timber Logs
-            td BuildRight Ltd
-            td $700
+    link(rel="stylesheet" href="/css/salesdashboard.css")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css")
+
+  body
+    nav.sidebar
+      h2 MWF Agent
+      ul
+        li: a(href="/") landing
+        li: a(href="/woodsales") Make Wood Sales
+        li: a(href="/registeredWood") Wood Stock
+        li: a(href="/registeredFurniture") Furniture Stock
+        li: a(href="/registeredWoodsale") Recorded woodsale
+        li: a(href="/logout") Logout
+
+    main.main-content
+      header
+        h1 Welcome, #{agentName}
+        p Record sales and check performance
+
+      //- Flash messages
+      if success_msg && success_msg.length
+        each msg in success_msg
+          .alert.alert-success(role="alert")= msg
+
+      if error_msg && error_msg.length
+        each msg in error_msg
+          .alert.alert-danger(role="alert")= msg
+
+      section.cards.d-flex.justify-content-between.mb-4
+        .card.text-center.p-3
+          h3 Today's Sales
+          p= todaysSales.toLocaleString()
+        .card.text-center.p-3
+          h3 Products Sold
+          p= productsSold + ' items'
+        
+
+    

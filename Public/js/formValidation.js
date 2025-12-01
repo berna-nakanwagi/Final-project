@@ -1,46 +1,73 @@
-document.getElementById("furnitureForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  let isValid = true;
-  const fields = ["name", "type", "price", "description"];
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("register-form");
+    const usernameInput = document.getElementById("username");
+    const emailInput = document.getElementById("email");
+    const roleInput = document.getElementById("role");
+    const passwordInput = document.getElementById("password");
 
-  fields.forEach((field) => {
-    const input = document.getElementById(field);
-    const error = input.nextElementSibling;
-    if (!input.value.trim()) {
-      error.textContent = "This field is required";
-      isValid = false;
-    } else {
-      error.textContent = "";
-    }
+    const usernameError = document.getElementById("error-username");
+    const emailError = document.getElementById("error-email");
+    const roleError = document.getElementById("error-role");
+    const passwordError = document.getElementById("error-password");
 
-    if (field === "price" && input.value && input.value <= 0) {
-      error.textContent = "Price must be greater than 0";
-      isValid = false;
-    }
-  });
+    form.addEventListener("submit", function(e) {
+        // Clear previous errors
+        usernameError.textContent = "";
+        emailError.textContent = "";
+        roleError.textContent = "";
+        passwordError.textContent = "";
 
-  if (isValid) {
-    alert("Form submitted successfully!");
-    e.target.reset();
-  }
+        let hasErrors = false;
+
+        // Username validation
+        if (usernameInput.value.trim() === "") {
+            usernameError.textContent = "Username is required.";
+            usernameError.style.color = "red";
+            hasErrors = true;
+        } else if (usernameInput.value.trim().length < 3) {
+            usernameError.textContent = "Username must be at least 3 characters.";
+            usernameError.style.color = "red";
+            hasErrors = true;
+        }
+
+        // Email validation without regex
+        const emailValue = emailInput.value.trim();
+        const atIndex = emailValue.indexOf("@");
+        const dotIndex = emailValue.lastIndexOf(".");
+        if (emailValue === "") {
+            emailError.textContent = "Email is required.";
+            emailError.style.color = "red";
+            hasErrors = true;
+        } else if (
+            atIndex < 1 ||           // @ cannot be first character
+            dotIndex < atIndex + 2 || // . must be after @
+            dotIndex === emailValue.length - 1 // cannot end with .
+        ) {
+            emailError.textContent = "Enter a valid email address.";
+            emailError.style.color = "red";
+            hasErrors = true;
+        }
+
+        // Role validation
+        if (roleInput.value === "") {
+            roleError.textContent = "Please select a role.";
+            roleError.style.color = "red";
+            hasErrors = true;
+        }
+
+        // Password validation
+        if (passwordInput.value.trim() === "") {
+            passwordError.textContent = "Password is required.";
+            passwordError.style.color = "red";
+            hasErrors = true;
+        } else if (passwordInput.value.trim().length < 6) {
+            passwordError.textContent = "Password must be at least 6 characters.";
+            passwordError.style.color = "red";
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            e.preventDefault(); // Stop form submission
+        }
+    });
 });
-
-let logIn =function(){
-    let user = document.getElementById("username").value
-    let password= document.getElementById("password").value
-    let message = document.getElementById("message")
-    // correct credentials
-    let correctUser="admin"
-    let correctPassword="1234"
-
-    if (user===correctUser &&password===correctPassword){
-message.textContent="login is successful,welcome"+user
-message.style.color="green"
-    } else{
-      message.textContent="invalid username or password"
-message.style.color="red"  
-    }
-
-}
-
-document.getElementById("btn").addEventListener("click",logIn)//activated

@@ -1,137 +1,100 @@
 const express = require('express');
 const router = express.Router();
-const {ensureAuthenticated, ensureManager, ensureSalesAgent} = require('../customMiddleware/auth');
-const FurnitureStock = require('../models/furniture');//import the models
-const woodStock = require('../models/wood');
-const woodsales = require('../models/wood_sale');
-const FurnitureSales = require('../models/furniture_sales');
+const { ensureAuthenticated, ensureSalesAgent } = require('../customMiddleware/auth');
+const WoodStock = require('../models/wood');
+const WoodSales = require('../models/wood_sale');
 
-// wood sales routes
- router.get("/woodsales", async(req, res) => {
-   try {
-      const woodsales = await woodStock.find();
-      res.render("Makewood_sale",{woodsales})
-   } catch (error) {
-     console.error(error.message)
-   }
-  
- });
-  router.post("/woodsales", async(req, res) => {
-   try {
-      const {productName,quantity,unitPrice,quality,date,paymentType,transport,measurements,color}= req.body;
-      //find all  woodstock with wood name
-      const stocks =await woodStock.find({productName:productName});
-      if(!stocks|| stocks.length === 0)
-       return res.status(400).send("stock not found");
-      // calculate total available quantity across all stock entries
-      const totalAvailable =stocks.reduce((sum,stock)=> sum + stock.quantity,0)
-      if (totalAvailable < Number(quantity))
-         return res.status(400).send("Insufficient stock")
-      //calculate total price
-      let total = unitPrice * Number(quantity)
-      if(transport)
-          total *= 1.05;
-      const sale =new woodsales({
-         productName,
-         quantity,
-         unitPrice,
-         quality,
-         date,   
-         paymentType,
-         measurements,
-         color,
-         transport:!!transport,
-         salesAgent:req.user._id,
-         totalPrice:total
-      })
-       await sale.save();
-// deduct quantity from the stock
-      let remainingToDeduct =  Number(quantity)
-      for(const stock of stocks){
-       if(remainingToDeduct <=0) break;
-       const deductFromThis =Math.min(stock.quantity,remainingToDeduct)
-       stock.quantity-=deductFromThis
-       remainingToDeduct-=deductFromThis
-       await stock.save();
-      }
-      res.redirect("/registeredFurniture")
-   } catch (error) {
-     console.error(error.message)
-   }
- });
-
-router.get("/registeredWoodsale", async (req, res) => {
+// Show wood sales form
+router.get("/woodsales", ensureAuthenticated, ensureSalesAgent, async (req, res) => {
   try {
-    const woodsalesList = await woodsales.find();   
-    res.render("list_woodsale", { woodsales: woodsalesList });
+    const woodStocks = await WoodStock.find();
+    res.render("Makewood_sale", { woodsales: woodStocks });
   } catch (error) {
-    console.error("Error getting woodsale from the DB!", error);
-    res.redirect("/");
-  }
-});
-router.get("/registeredWoodsale", async (req, res) => {
-  try {
-    const woodsalesList = await woodsales.find();   
-    res.render("list_woodsale", { woodsales: woodsalesList });
-  } catch (error) {
-    console.error("Error getting woodsale from the DB!", error);
-    res.redirect("/");
-  }
-});
-router.get("/registeredWoodsale", async (req, res) => {
-  try {
-    const woodsalesList = await woodsales.find();   
-    res.render("list_woodsale", { woodsales: woodsalesList });
-  } catch (error) {
-    console.error("Error getting woodsale from the DB!", error);
-    res.redirect("/");
-  }
-});
-router.get("/registeredWoodsale", async (req, res) => {
-  try {
-    const woodsalesList = await woodsales.find();   
-    res.render("list_woodsale", { woodsales: woodsalesList });
-  } catch (error) {
-    console.error("Error getting woodsale from the DB!", error);
-    res.redirect("/");
-  }
-});
-router.get("/registeredWoodsale", async (req, res) => {
-  try {
-    const woodsalesList = await woodsales.find();   
-    res.render("list_woodsale", { woodsales: woodsalesList });
-  } catch (error) {
-    console.error("Error getting woodsale from the DB!", error);
+    console.error(error.message);
     res.redirect("/");
   }
 });
 
-router.get("/registeredWoodsale", async (req, res) => {
+// Record a wood sale
+router.post("/woodsales", ensureAuthenticated, ensureSalesAgent, async (req, res) => {
   try {
-    const woodsalesList = await woodsales.find();   
+    const { productName, quantity, unitPrice, quality, paymentType, transport, measurements, color } = req.body;
+
+    // Find stock
+    const stocks = await WoodStock.find({ productName });
+    if (!stocks || stocks.length === 0) return res.status(400).send("Stock not found");
+
+    const totalAvailable = stocks.reduce((sum, stock) => sum + stock.quantity, 0);
+    if (totalAvailable < Number(quantity)) return res.status(400).send("Insufficient stock");
+
+    // Calculate total price
+    let totalPrice = unitPrice * Number(quantity);
+    if (transport) totalPrice *= 1.05;
+
+    // Create sale
+    const sale = new WoodSales({
+      productName,
+      quantity,
+      unitPrice,
+      quality,
+      date: new Date(),
+      paymentType,
+      measurements,
+      color,
+      transport: !!transport,
+      salesAgent: req.user._id,
+      totalPrice
+    });
+
+    await sale.save();
+
+    // Deduct stock
+    let remaining = Number(quantity);
+    for (const stock of stocks) {
+      if (remaining <= 0) break;
+      const deduct = Math.min(stock.quantity, remaining);
+      stock.quantity -= deduct;
+      remaining -= deduct;
+      await stock.save();
+    }
+
+    req.flash("success_msg", "Wood sale recorded successfully!");
+    res.redirect("/registeredWoodsale");
+  } catch (error) {
+    console.error(error.message);
+    req.flash("error_msg", "Unable to record sale");
+    res.redirect("/woodsales");
+  }
+});
+
+// List all wood sales
+router.get("/registeredWoodsale", ensureAuthenticated, ensureSalesAgent, async (req, res) => {
+  try {
+    const woodsalesList = await WoodSales.find().populate("salesAgent", "username");
     res.render("list_woodsale", { woodsales: woodsalesList });
   } catch (error) {
-    console.error("Error getting woodsale from the DB!", error);
+    console.error("Error getting wood sales from DB", error);
     res.redirect("/");
+  }
+});
+// get single wood sale to update
+router.get("/wood_sale/:id", ensureAuthenticated, ensureSalesAgent, async (req, res) => {
+  try {
+    const woodsalesList = await WoodSales.find();   // <-- REQUIRED
+    const sale = await WoodSales.findById(req.params.id);
+
+    if (!sale) return res.status(404).send("Sale not found");
+
+    res.render("update_woodSale", { 
+      woodsales: woodsalesList,   // <-- FIXED
+      item: sale
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Unable to find wood sale");
   }
 });
 
 
- //get woodsale to update
- router.get("/wood_sale/:id", async (req,res)=>{
-     try {
-         const woodsale = await woodsale.findOne({_id:req.params.id});
-         res.render("list_woodsale",{item:woodsale})
-     } catch (error) {
-       res.status(400).send("Unable to find woodsale from the database")  
-       console.log(error)
-     }
- });
- 
-
- // furniture sales routes
- router.get("/furnituresales",  (req, res) => {
-    res.render("Makefurniture_sale")
- });
-
- module.exports = router;
+module.exports = router;

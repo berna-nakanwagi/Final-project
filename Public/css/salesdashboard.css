@@ -48,13 +48,13 @@ body {
 }
 
 /* Welcome header */
-.main-content header h1 {
+.main-content h1 {
   font-size: 2rem;
   margin-bottom: 0.25rem;
   font-weight: 700;
 }
 
-.main-content header p {
+.main-content p {
   color: #7f8c8d;
   margin-bottom: 2rem;
 }
@@ -63,7 +63,6 @@ body {
 .cards {
   display: flex;
   gap: 2rem;
-  flex-wrap: wrap; /* allows wrapping if screen is narrow */
 }
 
 /* Individual card styling */
@@ -72,9 +71,8 @@ body {
   padding: 20px 30px;
   box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
   border-radius: 8px;
-  flex: 1 1 250px; /* grow, shrink, basis for responsive cards */
+  flex: 1;
   text-align: center;
-  min-width: 220px;
 }
 
 .card h3 {
@@ -96,7 +94,6 @@ body {
 @media (max-width: 768px) {
   .cards {
     flex-direction: column;
-    gap: 1.5rem;
   }
 
   .main-content {

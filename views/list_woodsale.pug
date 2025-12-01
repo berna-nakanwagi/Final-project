@@ -16,7 +16,6 @@ html
         th quality
         th measurements
         th Update 
-        th Delete
       if woodsales.length > 0
         each item in woodsales
           tr
@@ -28,8 +27,4 @@ html
             td #{item.quality}
             td #{item.measurements}
             td 
-                a.btn.btn-primary.btn-block(href=`/woodsale/${item._id}`) Update
-            td 
-              form(action="/deletewoodsale" method="post")
-                input(type="hidden" name="id" value=item._id)
-                button.btn.btn-danger.btn-block(type="submit") Delete 
+                a.btn.btn-primary.btn-block(href=`/wood_sale/${item._id}`) Update

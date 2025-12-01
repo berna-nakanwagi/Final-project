@@ -66,7 +66,7 @@ router.get("/registeredFurniture", async (req, res) => {
     }
 });
 //get furniture stock to update
-router.get("/furniture/:id", async (req,res)=>{
+router.get("/furniture/:id",ensureAuthenticated, ensureManager, async (req,res)=>{
     try {
         const furniture = await FurnitureStock.findOne({_id:req.params.id});
         res.render("update_furniture",{item:furniture})
@@ -76,7 +76,7 @@ router.get("/furniture/:id", async (req,res)=>{
     }
 });
 
-router.post("/furniture", async (req,res)=>{
+router.post("/furniture",ensureAuthenticated, ensureManager, async (req,res)=>{
     try {
         await FurnitureStock.findByIdAndUpdate({_id:req.query.id},req.body);
         res.redirect("/registeredFurniture")
@@ -87,7 +87,7 @@ router.post("/furniture", async (req,res)=>{
 });
 
 //delete furniture
-router.post("/deletefurniture", async (req,res)=>{
+router.post("/deletefurniture",ensureAuthenticated, ensureManager, async (req,res)=>{
     try {
         await FurnitureStock.deleteOne({_id:req.body.id});
         res.redirect("/registeredFurniture")
@@ -98,7 +98,7 @@ router.post("/deletefurniture", async (req,res)=>{
 });
 
 
-router.get("/registeredWood", ensureAuthenticated, ensureManager, async (req, res) => {
+router.get("/registeredWood", async (req, res) => {
     try {
         const wood = await woodStock.find();
         res.render("list_wood", { wood })
@@ -110,7 +110,7 @@ router.get("/registeredWood", ensureAuthenticated, ensureManager, async (req, re
 });
 
 //get wood stock to update
-router.get("/wood/:id", async (req,res)=>{
+router.get("/wood/:id", ensureAuthenticated, ensureManager, async (req,res)=>{
     try {
         const wood = await woodStock.findOne({_id:req.params.id});
         res.render("update_wood",{item:wood})
@@ -120,7 +120,7 @@ router.get("/wood/:id", async (req,res)=>{
     }
 });
 
-router.post("/wood", async (req,res)=>{
+router.post("/wood",ensureAuthenticated, ensureManager, async (req,res)=>{
     try {
         await woodStock.findByIdAndUpdate({_id:req.query.id},req.body);
         res.redirect("/registeredWood")
@@ -131,7 +131,7 @@ router.post("/wood", async (req,res)=>{
 });
 
 //delete wood
-router.post("/deletewood", async (req,res)=>{
+router.post("/deletewood", ensureAuthenticated, ensureManager, async (req,res)=>{
     try {
         await woodStock.deleteOne({_id:req.body.id});
         res.redirect("/registeredWood")

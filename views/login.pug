@@ -12,13 +12,16 @@ section.login-container
         | Mayondo
         span Wood
       p Welcome back to timeless craftsmanship
+      p#message
     form.login-form(action="/login" method="post")
       .input-group
         label(for='email') Email Address
         input#email(type='email' name='email' placeholder='example@email.com')
+        span#error-email.error-message
       .input-group
         label(for='password') Password
         input#password(type='password' name='password' placeholder='Enter your password')
+        span#error-password.error-message
       button.btn(type='submit') Login
       .options
         a(href='/register') Forgot password?
@@ -29,5 +32,5 @@ section.login-container
   //- <footer>
   //- <p>© 2025 Mayondo Wood Furniture | Designed by Nakanwagi Bernardette</p>
   //- </footer>
+script(src="/js/loginValidation.js")
 
-  script(src="/js/loginValidation.js")
